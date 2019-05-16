@@ -3,7 +3,7 @@
 This repository contains all code and files used in my master thesis written during spring 2019.
 The purpose behind this code is to validate a data model written in YANG, to ensure that the model can be used to configure access for a user to a resource outside the network it is connected to. The basis of this idea is to use intercontroller communication to improve access control between networks running SDN. The validation was done by running an emulation in Mininet with remote controllers running modified POX controllers. The POX controller can be found at the following link
 
-  https://github.com/noxrepo/
+  https://github.com/noxrepo/pox
 
 ################################################################
 
