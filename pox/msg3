@@ -1,0 +1,29 @@
+{
+    "message": {
+        "seqnum": 113, 
+        "user": {
+            "username": "janedoe", 
+            "domain": "ntnu.no", 
+            "ipv4-address-prefix": "", 
+            "port-number": 0, 
+            "mac": "00:00:00:00:09:00", 
+            "close-all": "False", 
+            "ipv6-address": "", 
+            "ipv4-address": "10.0.0.1", 
+            "ipv6-address-prefix": ""
+        }, 
+        "resources": {
+            "r1": {
+                "ipv4-address-prefix": "", 
+                "port-numbers": [], 
+                "mac": "", 
+                "ipv6-address": "", 
+                "close": "False", 
+                "ipv4-address": "10.0.0.2", 
+                "id": "r1", 
+                "ipv6-address-prefix": ""
+            }
+        }, 
+        "date-time": "2019-05-04T10:10:47Z"
+    }
+}
