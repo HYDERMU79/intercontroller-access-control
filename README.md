@@ -14,7 +14,8 @@ Also, clone or copy the pox part of this repository. Or should you already have 
 
 There are two main files running the logic of the different controllers: 
 
-controller_siteA and controller_siteB
+    controller_siteA
+    controller_siteB
 
 In order for the emulation to work, the IP address and port number which the controllers will attempt to communicate with has to be changed within these files. There are appropriate variable names at the top of both files. The IP address is the IP address of the machine running the other controller locally. Say that in controller_siteA, the value of ip_siteB is the IP of the machine running the siteB controller, and vice versa. The port number is the port you tell the webcore component to listen on. Later you will see how to instantiate all components used in this emulation. 
 
