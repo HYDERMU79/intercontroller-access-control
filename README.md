@@ -5,7 +5,7 @@ The purpose behind this code is to validate a data model written in YANG, to ens
 
   https://github.com/noxrepo/pox
 
-################################################################
+***
 
 Before starting, Mininet has to be installed and configured. See link below for step-by-step guide on how to set up Mininet: 
 
@@ -23,7 +23,7 @@ In order for the emulation to work, the IP address and port number which the con
 
 In addition, the custom.py file also has to change the IP addresses in order to reach the remote controllers. These IP addresses are the ones of the machines running the Mininet. While testing for this thesis, both controller ran locally while Mininet ran in a VM in the same machine. The IP is then the IP of this machine, localhost could also work. Remember to set up Mininet properly so that Mininet can reach the local host while running in the VM. 
 
-################################################################
+***
 
 In order to run the simulation: 
 
