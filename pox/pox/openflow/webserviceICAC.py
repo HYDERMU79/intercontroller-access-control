@@ -204,21 +204,21 @@ class OFRequestHandler (JSONRPCHandler):
 
   def _exec_send_msg1_to_siteA (self, json_object):
     #Msg 1 is now sent to controllerA at siteA, which then constructs Msg2
-    log.debug("MSG1 : ")
+    log.debug("Received msg1 : ")
     log.debug(json_object)
     ICAC_communicate_access(json_object)  
     return {"status":"complete","MSG1 sent to:":"siteA"}
  
   def _exec_send_msg2_to_siteB (self, json_object):
     #Msg 2 is now sent to controllerB at siteB, which then waits for the user to try reaching a resource at siteA
-    log.debug("MSG2 : ")
+    log.debug("Received msg2 : ")
     log.debug(json_object)
     ICAC_available_resources(json_object)
     return {"status":"complete","MSG2 sent to:":"siteB"}
   
   def _exec_send_msg3_to_siteA (self, json_object):
     #Msg 3 is now sent to controllerA at siteA, which will now make the rules to allow access.
-    log.debug("MSG3 : ")
+    log.debug("Received msg3 : ")
     log.debug(json_object)
     ICAC_configure_access(json_object)
     return {"status":"complete","MSG3 sent to:":"siteA"}

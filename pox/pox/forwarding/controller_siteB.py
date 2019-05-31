@@ -49,6 +49,10 @@ authentication_server = '10.0.0.123'
 # The resource at siteB(r2)
 r2 = '10.0.0.3'
 
+start_time_msg1 = 0
+start_time_msg3 = 0
+
+
 # The list of resources, known to siteB, that user has access to in siteA.
 file = open('resources', 'w')
 data  = []
@@ -92,6 +96,8 @@ class LearningSwitch (object):
     file.close()
 
     packet = event.parsed
+
+    global start_time_msg1, start_time_msg3
 
     def flood (message = None):
       """ 
@@ -153,19 +159,27 @@ class LearningSwitch (object):
 
     if (packet.src == user) and (isinstance(packet.next, arp)) and (packet.next.protodst == authentication_server):
       #User at siteB attempts to contact address reserved for Authentication Server.
-      file = open('msg1', 'r')
-      s = file.read()
-      params = {"json_object":s}
-      payload = {"method":"send_msg1_to_siteA","id":1, "params":params}
-      r = requests.post("http://" + str(ip_siteA) + ":" + str(port_siteA) + "/OF/", data=json.dumps(payload))
+      if (time.time() - start_time_msg1) > 8:
+        log.info("User accesses network, contacting authentication server")
+        log.info("Sending msg1 to controller_siteA")
+        file = open('msg1', 'r')
+        s = file.read()
+        params = {"json_object":s}
+        payload = {"method":"send_msg1_to_siteA","id":1, "params":params}
+        r = requests.post("http://" + str(ip_siteA) + ":" + str(port_siteA) + "/OF/", data=json.dumps(payload))
+      start_time_msg1 = time.time()
 
     if (packet.src == user) and ( ((isinstance(packet.next, arp)) and (str(packet.next.protodst) in resources) ) or ( (isinstance(packet.next, ipv4)) and (str(packet.next.dstip) in resources)) ):
       #User at siteB attempts to contact a known resource at siteA.
-      file = open('msg3', 'r')
-      s = file.read()
-      params = {"json_object":s}
-      payload = {"method":"send_msg3_to_siteA","id":3, "params":params}
-      r = requests.post("http://" + str(ip_siteA) + ":" + str(port_siteA) + "/OF/", data=json.dumps(payload))
+      if (time.time() - start_time_msg3) > 8:
+        log.info("User accesses known resource at siteA")
+        log.info("Sending msg3 to controller_siteA")
+        file = open('msg3', 'r')
+        s = file.read()
+        params = {"json_object":s}
+        payload = {"method":"send_msg3_to_siteA","id":3, "params":params}
+        r = requests.post("http://" + str(ip_siteA) + ":" + str(port_siteA) + "/OF/", data=json.dumps(payload))
+      start_time_msg3 = time.time()
 
     ## Remaining code in this function is unchanged from POX's stock component l2_learning.py
     if not self.transparent:
@@ -184,8 +198,8 @@ class LearningSwitch (object):
         if port == event.port:
           return
     
-        log.debug("installing flow for %s.%i -> %s.%i" %
-                  (packet.src, event.port, packet.dst, port))
+        #log.debug("installing flow for %s.%i -> %s.%i" %
+        #          (packet.src, event.port, packet.dst, port))
         msg = of.ofp_flow_mod()
         msg.match = of.ofp_match.from_packet(packet, event.port)
         msg.idle_timeout = 10
@@ -227,6 +241,7 @@ def ICAC_available_resources(json_object):
   """
   Receives msg2 and updates list of known resources user has access to.
   """
+  log.info("Updates list of known resources")
   file = open('resources', 'r')
   resources = eval(file.readline())
   s=json.loads(json_object)
@@ -234,6 +249,7 @@ def ICAC_available_resources(json_object):
     ip =s["message"]["resources"][element]["ipv4-address"]
     if str(ip) not in resources:
       file.close()
+      log.info("Adds resource to list, IP = " + str(ip))
       resources.append(str(ip))
       file = open('resources', 'w')
       file.write(str(resources))

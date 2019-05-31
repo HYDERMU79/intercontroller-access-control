@@ -137,6 +137,7 @@ class LearningSwitch (object):
         return False
       for element in allowedConnections:
         if (element[0] == source and element[1] == destination) or (element[0] == destination and element[1] == source): #Traffic both ways are allowed
+          log.info("Connection listed as allowed: " + str(source) + " <-> " + str(destination))
           return True
       return False
 
@@ -172,8 +173,8 @@ class LearningSwitch (object):
           drop(10)
           return
 
-        log.debug("installing flow for %s.%i -> %s.%i" %
-                  (packet.src, event.port, packet.dst, port))
+        #log.debug("installing flow for %s.%i -> %s.%i" %
+        #          (packet.src, event.port, packet.dst, port))
         msg = of.ofp_flow_mod()
         msg.match = of.ofp_match.from_packet(packet, event.port)
         msg.idle_timeout = 10
@@ -212,6 +213,7 @@ def ICAC_communicate_access(json_object):
   """
   Receives msg1, and sends msg2 to controller at siteB.
   """
+  log.info("Sending msg2 to controller_siteB")
   file = open('msg2', 'r')
   s = file.read()
   params = {"json_object":s}
@@ -223,10 +225,12 @@ def ICAC_configure_access(json_object):
   """
   Receives msg3 from controller at siteB. Extracts information and updates allowedConnection.
   """
+  log.info("Updates list of allowed connections")
   s = json.loads(json_object)
   ip1 = s["message"]["user"]["ipv4-address"]
   ip2 = s["message"]["resources"]["r1"]["ipv4-address"]
   file = open('allowedConnections', 'w')
+  log.info("Adds connection to list: " + str(ip1) + " <-> " + str(ip2))
   data = [[str(ip1), str(ip2)]]
   file.write(str(data))
   file.close() 
