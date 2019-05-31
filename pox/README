@@ -1,3 +1,22 @@
+The POX controller was used to validate a data model in this master thesis. 
+Most of the POX source code remain untouched except for these files: 
+  # Messages created by following the data model
+  msg1
+  msg2
+  msg3
+  # Files created when running the code/emulation
+  allowedConnections
+  resources
+  siteAhosts
+  siteBhosts
+  # POX l2_learning.py files, extended in order to validate data model
+  pox.forwarding.controller_siteA
+  pox.forwarding.controller_siteB
+  # POX webservice.py file extended in order to validate data model
+  pox.openflow.webserviceICAC.py
+  
+#######################################################################
+
 POX is a networking software platform written in Python
 
 POX started life as an OpenFlow controller, but can now also function
